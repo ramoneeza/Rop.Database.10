@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Rop.CycleTask;
+namespace Rop.Database10.CycleTask;
 
 public class CycleQueue<T> where T : class,ICycleTask
 {

@@ -1,4 +1,4 @@
-﻿namespace Rop.CycleTask;
+﻿namespace Rop.Database10.CycleTask;
 
 public class CycleTaskWrapper<T> where T: ICycleTask
 {

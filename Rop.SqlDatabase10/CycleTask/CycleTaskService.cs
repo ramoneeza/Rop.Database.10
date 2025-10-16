@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-namespace Rop.CycleTask;
+namespace Rop.Database10.CycleTask;
 
 /// <summary>
 /// Class to run tasks in a cycle

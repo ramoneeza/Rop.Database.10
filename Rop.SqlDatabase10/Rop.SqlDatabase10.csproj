@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rop.AbsDatabase10\Rop.AbsDatabase10.csproj" />
-    <ProjectReference Include="..\Rop.CycleTask\Rop.CycleTask.csproj" />
   </ItemGroup>
 
 </Project>

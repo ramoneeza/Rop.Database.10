@@ -42,17 +42,8 @@ SQL Server specific implementation with advanced features.
 - Cache repository with automatic invalidation
 - Type handlers for DateOnly and TimeOnly (.NET 6+)
 - Foreign database support
-
-### Rop.CycleTask
-[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
-
-Background task scheduler for periodic database operations.
-
-**Features:**
-- Priority-based task scheduling
-- Automatic retry logic
-- Task dependency management
-- Thread-safe queue implementation
+- Background task scheduler for periodic operations
+- Priority-based task queue
 
 ## Quick Start
 
@@ -101,14 +92,11 @@ Rop.Database.10/
 |   +-- AbsDatabase.*.cs             # Partial implementations
 |
 +-- Rop.SqlDatabase10/               # SQL Server implementation
-|   +-- Database.cs                  # SQL Server database
-|   +-- Repository/                  # Repository implementations
-|   +-- CacheRepository/             # Cached repository
-|   +-- Tracking/                    # Change tracking
-|
-+-- Rop.CycleTask/                   # Background task scheduler
-    +-- CycleTaskService.cs
-    +-- CycleQueue.cs
+    +-- Database.cs                  # SQL Server database
+    +-- Repository/                  # Repository implementations
+    +-- CacheRepository/             # Cached repository
+    +-- Tracking/                    # Change tracking
+    +-- CycleTask/                   # Background task scheduler
 ```
 
 ## Requirements
@@ -165,7 +153,6 @@ All projects in this repository:
 - **Rop.Dapper.ContribEx10**
 - **Rop.AbsDatabase10**
 - **Rop.SqlDatabase10**
-- **Rop.CycleTask**
 
 are distributed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html).
 
@@ -196,7 +183,8 @@ See [LICENSE](LICENSE) file for full license text.
 - [x] Repository pattern
 - [x] Change tracking integration
 - [x] Cache repository
-- [ ] Multi-database support (PostgreSQL, MySQL,SQLite)
+- [x] Background task scheduler
+- [ ] Multi-database support (PostgreSQL, MySQL, SQLite)
 - [ ] Performance benchmarks
 
 ---
