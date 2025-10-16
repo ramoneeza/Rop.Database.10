@@ -230,6 +230,7 @@ WITH (TRACK_COLUMNS_UPDATED = OFF);
 ## Documentation
 
 - [Rop.Dapper.ContribEx10 Documentation](Rop.Dapper.ContribEx10/Readme.md) - Dapper extensions and helpers
+- [Rop.AbsDatabase10 Documentation](Rop.AbsDatabase10/Readme.md) - Abstract database layer and Unit of Work
 - [Rop.SqlDatabase10 Documentation](Rop.SqlDatabase10/Readme.md) - Repository patterns and Change Tracking
 
 ## Testing
