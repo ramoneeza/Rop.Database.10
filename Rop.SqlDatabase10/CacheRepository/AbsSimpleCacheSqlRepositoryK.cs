@@ -5,7 +5,14 @@ using Rop.Database10.Repository;
 
 namespace Rop.Database10.CacheRepository
 {
-    public abstract class AbsSimpleCacheSqlRepositoryK<T,D, K>:IAbsSimpleSqlRepository<T, K> where T : class where D:class where K : notnull
+    /// <summary>
+    /// Base class for a simple SQL repository that expired after a specified time with key of type K and DTO.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="D"></typeparam>
+    /// <typeparam name="K"></typeparam>
+    public abstract class AbsSimpleCacheSqlRepositoryK<T, D, K> : IAbsSimpleSqlRepository<T, K>
+        where T : class where D : class where K : notnull
     {
         public event EventHandler? OnChange;
         public event EventHandler<RecordsChangedEventArgs<K>>? OnRecordsChanged;
@@ -23,15 +30,20 @@ namespace Rop.Database10.CacheRepository
         // Constructor
 
 
-        protected AbsSimpleCacheSqlRepositoryK(Database database, TimeSpan? defaultExpirationTime=null,TimeSpan? defaultcleantime=null)
+        protected AbsSimpleCacheSqlRepositoryK(Database database, TimeSpan? defaultExpirationTime = null,
+            TimeSpan? defaultcleantime = null)
         {
             Database = database.FactoryExternalDatabase<D>();
-            KeyDescription = DapperHelperExtend.GetKeyDescription<D>()??throw new Exception($"Type {typeof(D)} has not key");
-            KeyPropT=typeof(T).GetProperty(KeyDescription.KeyProp.Name) ?? throw new Exception($"Type {typeof(T)} has not key");
+            KeyDescription = DapperHelperExtend.GetKeyDescription<D>() ??
+                             throw new Exception($"Type {typeof(D)} has not key");
+            KeyPropT = typeof(T).GetProperty(KeyDescription.KeyProp.Name) ??
+                       throw new Exception($"Type {typeof(T)} has not key");
             DefaultExpirationTime = defaultExpirationTime ?? TimeSpan.FromMinutes(5);
             DefaultExpirationCleanTime = defaultcleantime ?? TimeSpan.FromMinutes(10);
-            var eq=(Type.GetTypeCode(typeof(K))==TypeCode.String)? (IEqualityComparer<K>)StringComparer.OrdinalIgnoreCase : EqualityComparer<K>.Default;
-            Repository = new MemoryCache<K, T>(GetTKey,DefaultExpirationTime,DefaultExpirationCleanTime,eq);
+            var eq = (Type.GetTypeCode(typeof(K)) == TypeCode.String)
+                ? (IEqualityComparer<K>)StringComparer.OrdinalIgnoreCase
+                : EqualityComparer<K>.Default;
+            Repository = new MemoryCache<K, T>(GetTKey, DefaultExpirationTime, DefaultExpirationCleanTime, eq);
             SqlLoadKeys = $"SELECT {KeyDescription.KeyName} FROM {KeyDescription.TableName}";
         }
 
@@ -43,8 +55,8 @@ namespace Rop.Database10.CacheRepository
         }
 
         protected abstract T Map(D item);
-        public virtual K GetTKey(T item)=> (K)(KeyPropT.GetValue(item)??throw new Exception("Can't get Key"));
-        public virtual K GetDKey(D item)=> (K)(KeyPropT.GetValue(item)??throw new Exception("Can't get Key"));
+        public virtual K GetTKey(T item) => (K)(KeyPropT.GetValue(item) ?? throw new Exception("Can't get Key"));
+        public virtual K GetDKey(D item) => (K)(KeyPropT.GetValue(item) ?? throw new Exception("Can't get Key"));
 
 
         protected EnumerableResult<K> IntReloadAllKeys()
@@ -57,6 +69,7 @@ namespace Rop.Database10.CacheRepository
                     LastError = keys.Error!;
                     return LastError;
                 }
+
                 Repository.ForceKeys(keys.Value!);
                 MustReload = false;
                 Initialized = true;
@@ -68,6 +81,7 @@ namespace Rop.Database10.CacheRepository
         protected abstract EnumerableResult<T> IntReloadAll();
         public bool HasError => LastError != null;
         public Error? LastError { get; protected set; }
+
         protected void OnMustInvokeChanges(IReadOnlyCollection<K>? changes)
         {
             RepositoryChanged(changes);
@@ -87,22 +101,27 @@ namespace Rop.Database10.CacheRepository
                 }
             }
         }
+
         public bool MustReload { get; private set; } = true;
         public bool Initialized { get; private set; } = false;
         protected virtual bool ReloadOnAnyChange => false;
+
         public void Reset(bool avoidsendchanges = false)
         {
             MustReload = true;
             IntReloadAllKeys();
         }
+
         public virtual void Init()
         {
             if (!Initialized) IntReloadAllKeys();
         }
+
         public virtual void Check()
         {
             if (MustReload) IntReloadAllKeys();
         }
+
         protected R LockUnitOfWork<R>(Func<R> a)
         {
             lock (_lockdic)
@@ -110,108 +129,137 @@ namespace Rop.Database10.CacheRepository
                 return a();
             }
         }
-        public bool ResetIds(IEnumerable changes)=> ResetIds(changes.Cast<K>().ToArray());
+
+        public bool ResetIds(IEnumerable changes) => ResetIds(changes.Cast<K>().ToArray());
+
         public bool ResetIds(params IReadOnlyCollection<K> changes)
-{
-    if (changes.Count == 0) return true;
-    try
-    {
-        var r = LockUnitOfWork(() =>
         {
-            Repository.Expires(changes);
-            return true;
-        });
-        return r;
-    }
-    catch (Exception ex)
-    {
-        LastError = new ExceptionError(ex);
-        return false;
-    }
-    finally
-    {
-        OnMustInvokeChanges(changes);
-    }
-}
-
-public virtual T? Get(K key)
-{
-    Check();
-    lock (_lockdic)
-    {
-        var r = Repository.GetValueOrDefault(key);
-        if (r == null) return null;
-        if (!r.Expired) return r.Value!;
-        var r2= IntGet(key);
-        if (r2 == null) return null;
-        Repository.Add(r2);
-        return r2;
-    }
-}
-public virtual List<T> GetAll()
-{
-    Check();
-    lock (_lockdic)
-    {
-        var r=Repository.RefreshAll((count, keys) =>
-        {
-            if (keys.Count > count * 0.75)
+            if (changes.Count == 0) return true;
+            try
             {
-                return IntReloadAll();
+                var r = LockUnitOfWork(() =>
+                {
+                    Repository.Expires(changes);
+                    return true;
+                });
+                return r;
             }
-            else
+            catch (Exception ex)
             {
-                return IntReloadSome(keys);
+                LastError = new ExceptionError(ex);
+                return false;
             }
-        });
-        return r.Value.ToList();
-    }
-}
-
-public List<T> GetSome(IEnumerable<K> keys)
-{
-    Check();
-    lock (_lockdic)
-    {
-        var res = new List<T>();
-        foreach (var key in keys)
-        {
-            var r = Repository.GetValueOrDefault(key);
-            if (r == null) continue;
-            if (!r.Expired)
+            finally
             {
-                res.Add(r.Value!);
-                continue;
+                OnMustInvokeChanges(changes);
             }
-            var r2 = IntGet(key);
-            if (r2 == null) continue;
-            Repository.Add(r2);
-            res.Add(r2);
         }
-        return res;
+
+        public virtual T? Get(K key)
+        {
+            Check();
+            lock (_lockdic)
+            {
+                var r = Repository.GetValueOrDefault(key);
+                if (r == null) return null;
+                if (!r.Expired) return r.Value!;
+                var r2 = IntGet(key);
+                if (r2 == null) return null;
+                Repository.Add(r2);
+                return r2;
+            }
+        }
+
+        public virtual List<T> GetAll()
+        {
+            Check();
+            lock (_lockdic)
+            {
+                var r = Repository.RefreshAll((count, keys) =>
+                {
+                    if (keys.Count > count * 0.75)
+                    {
+                        return IntReloadAll();
+                    }
+                    else
+                    {
+                        return IntReloadSome(keys);
+                    }
+                });
+                return r.Value.ToList();
+            }
+        }
+
+        public List<T> GetSome(IEnumerable<K> keys)
+        {
+            Check();
+            lock (_lockdic)
+            {
+                var res = new List<T>();
+                foreach (var key in keys)
+                {
+                    var r = Repository.GetValueOrDefault(key);
+                    if (r == null) continue;
+                    if (!r.Expired)
+                    {
+                        res.Add(r.Value!);
+                        continue;
+                    }
+
+                    var r2 = IntGet(key);
+                    if (r2 == null) continue;
+                    Repository.Add(r2);
+                    res.Add(r2);
+                }
+
+                return res;
+            }
+        }
+
+        public FrozenDictionary<K, T> GetAllDictionary()
+        {
+            return GetAll().ToFrozenDictionary(GetTKey);
+        }
+
+        protected virtual void RepositoryChanged(IReadOnlyCollection<K>? changes)
+        {
+        }
+
+        protected virtual bool InRange(T item) => true;
+
+
+
     }
-}
 
-public FrozenDictionary<K, T> GetAllDictionary()
-{
-    return GetAll().ToFrozenDictionary(GetTKey);
-}
-protected virtual void RepositoryChanged(IReadOnlyCollection<K>? changes)
-{
-}
-protected virtual bool InRange(T item) => true;
-        
-        
-        
- }
 
-    public abstract class AbsSimpleCacheSqlIntRepository<T>(Database database,TimeSpan? defaultExpirationTime=null,TimeSpan? defaultcleantime=null)
-        : AbsSimpleCacheSqlRepositoryK<T,T, int>(database,defaultExpirationTime, defaultcleantime) where T : class
+    /// <summary>
+    /// Base class for a simple SQL repository that expired after a specified time with key of type int and without DTO.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="database"></param>
+    /// <param name="defaultExpirationTime"></param>
+    /// <param name="defaultcleantime"></param>
+    public abstract class AbsSimpleCacheSqlIntRepository<T>(
+        Database database,
+        TimeSpan? defaultExpirationTime = null,
+        TimeSpan? defaultcleantime = null)
+        : AbsSimpleCacheSqlRepositoryK<T, T, int>(database, defaultExpirationTime, defaultcleantime) where T : class
     {
         protected override T Map(T item) => item;
     }
-    public abstract class AbsSimpleCacheSqlRepository<T>(Database database,TimeSpan? defaultExpirationTime=null,TimeSpan? defaultcleantime=null)
-        : AbsSimpleCacheSqlRepositoryK<T,T, string>(database, defaultExpirationTime, defaultcleantime) where T : class
+
+    /// <summary>
+    /// Base class for a simple SQL repository that expired after a specified time with key of type string and without DTO.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="database"></param>
+    /// <param name="defaultExpirationTime"></param>
+    /// <param name="defaultcleantime"></param>
+    public abstract class AbsSimpleCacheSqlRepository<T>(
+        Database database,
+        TimeSpan? defaultExpirationTime = null,
+        TimeSpan? defaultcleantime = null)
+        : AbsSimpleCacheSqlRepositoryK<T, T, string>(database, defaultExpirationTime, defaultcleantime) where T : class
     {
         protected override T Map(T item) => item;
     }

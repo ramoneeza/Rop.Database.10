@@ -4,7 +4,9 @@ using System.Reflection;
 
 namespace Rop.Database10.Repository
 {
-    
+    /// <summary>
+    /// Interface for a simple SQL repository.
+    /// </summary>
     public interface IAbsSimpleSqlRepository
     {
         event EventHandler? OnChange;
@@ -18,7 +20,11 @@ namespace Rop.Database10.Repository
         void Check();
         void Reset(bool avoidsendchanges = false);
     }
-
+    /// <summary>
+    /// Interface for a simple SQL repository with specific types.
+    /// </summary>
+    /// <typeparam name="T">Entity Type</typeparam>
+    /// <typeparam name="K">Key Type</typeparam>
     public interface IAbsSimpleSqlRepository<T,K>:IAbsSimpleSqlRepository where T : class where K : notnull
     {
         event EventHandler<RecordsChangedEventArgs<K>>? OnRecordsChanged;
@@ -31,7 +37,12 @@ namespace Rop.Database10.Repository
         List<T> GetSome(IEnumerable<K> keys);
         FrozenDictionary<K, T> GetAllDictionary();
     }
-
+    /// <summary>
+    /// Base abstract class for a simple SQL repository with specific entity type, dto type and key type.
+    /// </summary>
+    /// <typeparam name="T">Entity Type</typeparam>
+    /// <typeparam name="D">Dto type as in database table with dapper decorators</typeparam>
+    /// <typeparam name="K">Key type</typeparam>
     public abstract class AbsSimpleSqlRepositoryK<T,D, K>:IAbsSimpleSqlRepository<T,K> where T : class where D:class where K : notnull
     {
         public event EventHandler? OnChange;
@@ -178,19 +189,41 @@ namespace Rop.Database10.Repository
         protected virtual bool InRange(T item) => true;
     }
 
+    /// <summary>
+    /// Base abstract class for a simple SQL repository with specific entity type and dto type, using int as key type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="D"></typeparam>
+    /// <param name="database"></param>
     public abstract class AbsSimpleSqlIntRepository<T,D>(Database database)
         : AbsSimpleSqlRepositoryK<T,D, int>(database) where T : class where D: class
     {
     }
+    /// <summary>
+    /// Base abstract class for a simple SQL repository with specific entity type and dto type, using string as key type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="D"></typeparam>
+    /// <param name="database"></param>
     public abstract class AbsSimpleSqlRepository<T,D>(Database database)
         : AbsSimpleSqlRepositoryK<T,D, string>(database) where T : class where D : class
     {
     }
+    /// <summary>
+    /// Base abstract class for a simple SQL repository with specific entity type, using string as key type without specific DTO.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="database"></param>
     public abstract class AbsSimpleSqlRepository<T>(Database database)
         : AbsSimpleSqlRepository<T, T>(database) where T : class
     {
         protected override T Map(T item)=> item;
     }
+    /// <summary>
+    /// Base abstract class for a simple SQL repository with specific entity type, using int as key type without specific DTO.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="database"></param>
     public abstract class AbsSimpleSqlIntRepository<T>(Database database)
         : AbsSimpleSqlIntRepository<T, T>(database) where T : class
     {

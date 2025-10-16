@@ -1,6 +1,8 @@
-﻿# Rop.Database.10
+﻿![Rop.Database.10](Rop.Dapper.ContribEx10/icon.png)
 
-Suite of .NET 9 libraries for advanced database operations with Dapper, including change tracking, caching, and repository patterns.
+# Rop.Database.10
+
+Suite of .NET 9 libraries for advanced database operations with Dapper, including change tracking, caching, and DTO-oriented repository patterns.
 
 ## Projects in this Solution
 
@@ -34,16 +36,19 @@ Abstract database layer providing base functionality for database operations.
 ### Rop.SqlDatabase10
 [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
-SQL Server specific implementation with advanced features.
+SQL Server specific implementation with DTO-oriented repository patterns.
 
 **Features:**
-- SQL Server Change Tracking integration
-- Repository pattern implementations
-- Cache repository with automatic invalidation
+- SQL Server Change Tracking integration for reactive updates
+- DTO-oriented repository base classes with direct mapping
+- Event-driven architecture (OnRecordsChanged events)
+- Time-based cache with configurable expiration (default 5 minutes)
+- Automatic cache invalidation on external data changes (dual strategy: time + events)
 - Type handlers for DateOnly and TimeOnly (.NET 6+)
 - Foreign database support
-- Background task scheduler for periodic operations
-- Priority-based task queue
+- Multiple repository types (Standard, DTO, Simple, Cached, Partial Key)
+
+[Full Documentation](Rop.SqlDatabase10/Readme.md)
 
 ## Quick Start
 
@@ -57,7 +62,7 @@ dotnet add package Rop.Dapper.ContribEx10
 dotnet add reference ../Rop.SqlDatabase10/Rop.SqlDatabase10.csproj
 ```
 
-### Basic Usage
+### Basic Usage with Dapper Extensions
 
 ```csharp
 using Rop.Dapper.ContribEx10;
@@ -66,15 +71,108 @@ using Rop.Database10;
 // Create database instance
 var database = new Database(connectionString);
 
-// Use Dapper extensions
+// Use Dapper extensions directly
 var user = connection.GetSlim<User>(userId);
 var users = connection.GetAllSlim<User>();
+```
 
-// Use repository pattern
-public class UserRepository : AbsSqlRepository<User>
+### Repository Pattern with DTO Mapping
+
+```csharp
+using Rop.Database10;
+using Rop.Database10.Repository;
+
+// Entity (your business model)
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+
+// DTO (database table with Dapper attributes)
+[Table("Users")]
+public class UserDto
+{
+    [ExplicitKey]
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public byte[] PasswordHash { get; set; }
+}
+
+// Repository with DTO mapping
+public class UserRepository : AbsSqlDtoIntRepository<User, UserDto>
 {
     public UserRepository(Database database) : base(database) { }
+    
+    // Map DTO to Entity (hide sensitive fields)
+    protected override User Map(UserDto dto)
+    {
+        return new User
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            Email = dto.Email
+            // PasswordHash is not exposed
+        };
+    }
 }
+
+// Use repository
+var userRepo = new UserRepository(database);
+var user = await userRepo.Get(userId);        // Returns User (entity)
+var allUsers = await userRepo.GetAll();       // Returns List<User>
+```
+
+### Reactive Cache with Change Tracking
+
+```csharp
+using Rop.Database10.CacheRepository;
+
+// Cached repository - automatically invalidates on external changes AND time expiration
+public class CachedUserRepository : AbsCacheSqlDtoRepositoryK<User, UserDto, int>
+{
+    public CachedUserRepository(Database database) 
+        : base(
+            database, 
+            useslim: true,                                    // Use optimized queries
+            defaultExpirationTime: TimeSpan.FromMinutes(10),  // Expire after 10 minutes
+            changespriority: 3)                               // Change tracking priority
+    { }
+    
+    protected override User Map(UserDto dto)
+    {
+        return new User { Id = dto.Id, Name = dto.Name, Email = dto.Email };
+    }
+}
+
+// Repository has DUAL invalidation strategy:
+var cachedRepo = new CachedUserRepository(database);
+
+// 1. TIME-BASED EXPIRATION (default 5 minutes, configurable)
+// First call - hits database and caches
+var user = await cachedRepo.Get(userId);
+
+// Within expiration time - returns from cache
+var userAgain = await cachedRepo.Get(userId);
+
+// After expiration time - automatically reloads from database
+Thread.Sleep(TimeSpan.FromMinutes(10));
+var userExpired = await cachedRepo.Get(userId);
+
+// 2. EVENT-BASED INVALIDATION (via Change Tracking)
+// When another service updates the Users table:
+// - SQL Server Change Tracking detects the change immediately
+// - Repository receives notification via event
+// - Cache entry is IMMEDIATELY invalidated (regardless of time)
+// - Next Get(userId) will fetch fresh data
+
+// This ensures:
+// ✅ Fast reads from cache when data hasn't changed
+// ✅ Automatic refresh on time expiration
+// ✅ Immediate updates when external services modify data
+// ✅ No stale data in distributed scenarios
 ```
 
 ## Architecture
@@ -83,20 +181,28 @@ public class UserRepository : AbsSqlRepository<User>
 Rop.Database.10/
 |
 +-- Rop.Dapper.ContribEx10/          # Dapper extensions (NuGet package)
+|   +-- icon.png                     # Project icon (also used as solution icon)
 |   +-- ConnectionHelper.*.cs        # Extension methods for IDbConnection
 |   +-- DapperHelperExtend.*.cs      # Helper utilities
 |   +-- Attributes/                  # Custom attributes
 |
 +-- Rop.AbsDatabase10/               # Abstract database layer
+|   +-- icon.png                     # Project icon
 |   +-- AbsDatabase.cs               # Base database class
 |   +-- AbsDatabase.*.cs             # Partial implementations
 |
 +-- Rop.SqlDatabase10/               # SQL Server implementation
+    +-- icon.png                     # Project icon
     +-- Database.cs                  # SQL Server database
     +-- Repository/                  # Repository implementations
-    +-- CacheRepository/             # Cached repository
+    |   +-- AbsSqlRepository.cs      # Standard repositories
+    |   +-- AbsSqlDtoRepository.cs   # DTO repositories
+    |   +-- AbsSimpleSqlRepositoryK.cs  # Simple repositories
+    +-- CacheRepository/             # Cached repository with auto-invalidation
+    +-- PartialKeyRepository/        # Composite key repositories
     +-- Tracking/                    # Change tracking
-    +-- CycleTask/                   # Background task scheduler
+    +-- CycleTask/                   # Task queue for change detection
+    +-- TypeHandlers/                # DateOnly/TimeOnly handlers
 ```
 
 ## Requirements
@@ -117,13 +223,14 @@ SET CHANGE_TRACKING = ON
 
 -- Enable on table
 ALTER TABLE MyTable
-ENABLE CHANGE_TRACKING
+ENABLE CHANGE TRACKING
 WITH (TRACK_COLUMNS_UPDATED = OFF);
 ```
 
 ## Documentation
 
-- [Rop.Dapper.ContribEx10 Documentation](Rop.Dapper.ContribEx10/Readme.md)
+- [Rop.Dapper.ContribEx10 Documentation](Rop.Dapper.ContribEx10/Readme.md) - Dapper extensions and helpers
+- [Rop.SqlDatabase10 Documentation](Rop.SqlDatabase10/Readme.md) - Repository patterns and Change Tracking
 
 ## Testing
 
@@ -180,12 +287,13 @@ See [LICENSE](LICENSE) file for full license text.
 ## Roadmap
 
 - [x] Basic Dapper extensions
-- [x] Repository pattern
+- [x] Repository pattern with DTO support
 - [x] Change tracking integration
-- [x] Cache repository
-- [x] Background task scheduler
+- [x] Cached repositories with auto-invalidation
+- [x] Event-driven architecture
 - [ ] Multi-database support (PostgreSQL, MySQL, SQLite)
 - [ ] Performance benchmarks
+- [ ] Horizontal scaling support
 
 ---
 

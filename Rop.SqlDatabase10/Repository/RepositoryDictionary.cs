@@ -6,6 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Rop.Database10.Repository;
+
+/// <summary>
+/// Internal thread-safe dictionary for repositories with some helper methods
+/// </summary>
+/// <typeparam name="K"></typeparam>
+/// <typeparam name="D"></typeparam>
 public class RepositoryDictionary<K,D> where K: notnull where D: class
 {
     private readonly Dictionary<K,D> _dictionary;

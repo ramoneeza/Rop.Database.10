@@ -1,12 +1,21 @@
 ﻿namespace Rop.Database10.Repository
 {
-    
+    /// <summary>
+    /// Interface for a SQL repository with table dependency and versioning.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="K"></typeparam>
     public interface ISqlRepository<T,K>:IAbsSimpleSqlRepository<T,K> where T : class where K : notnull
     {
         SqlTableDependency TableDependency { get; }
         long Version { get; }
     }
-
+    /// <summary>
+    /// Base class for SQL repositories with table dependency and versioning with DTO.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="D"></typeparam>
+    /// <typeparam name="K"></typeparam>
 
     public abstract class AbsSqlRepositoryK<T,D, K> : AbsSimpleSqlRepositoryK<T,D, K>,ISqlRepository<T,K> where T : class where D:class where K : notnull
     {

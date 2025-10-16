@@ -5,7 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <RootNamespace>Rop.Database</RootNamespace>
-	  
+	  <!-- Icon -->
+	  <PackageIcon>icon.png</PackageIcon>
 	  <!-- Package Metadata -->
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageId>Rop.AbsDatabase10</PackageId>
@@ -36,4 +37,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Rop.Dapper.ContribEx10\Rop.Dapper.ContribEx10.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<None Include="Readme.md" Pack="true" PackagePath="\" /> 
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 </Project>
