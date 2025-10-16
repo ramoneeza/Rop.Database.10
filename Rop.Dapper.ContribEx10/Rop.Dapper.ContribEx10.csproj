@@ -4,34 +4,60 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <PackageTags>orm;sql;micro-orm;dapper</PackageTags>
-	  <Description>Adicional helpers for Dapper.net and Dapper.Contrib</Description>
-	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Version>1.0.0</Version>
-	  <Authors>Ramon Ordiales Plaza</Authors>
-	  <Company>Ramon Ordiales Plaza</Company>
-	  <Copyright>2025 Ramon Ordiales</Copyright>
-	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-	  <RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
-	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Dapper.ContribEx10</PackageProjectUrl>
-	  <PackageReadmeFile>Readme.md</PackageReadmeFile>
-
-    <!-- Enable XML documentation file generation -->
+    
+    <!-- Package Metadata -->
+    <PackageId>Rop.Dapper.ContribEx10</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Ramon Ordiales Plaza</Authors>
+    <Company>Ramon Ordiales Plaza</Company>
+    <Copyright>2025 Ramon Ordiales Plaza</Copyright>
+    
+    <!-- Description -->
+    <Title>Rop.Dapper.ContribEx10</Title>
+    <Description>Advanced extensions for Dapper and Dapper.Contrib targeting .NET 9. Includes optimized queries, partial key support, foreign database handling, cached SQL generation, and full async/await support.</Description>
+    <PackageTags>dapper;orm;sql;micro-orm;database;extensions;net9;async;partial-keys;merge</PackageTags>
+    
+    <!-- License -->
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    
+    <!-- Repository - CORREGIDO CON LA URL REAL -->
+    <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
+    
+    <!-- Documentation -->
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    
+    <!-- Release Notes -->
+    <PackageReleaseNotes>
+      Initial release (v1.0.0):
+      - Extended CRUD operations with Dapper
+      - Optimized "Slim" SELECT queries
+      - Partial key support for composite keys
+      - Foreign database handling
+      - Cached SQL query generation
+      - Full async/await support
+      - Compatible with .NET 9 and C# 13
+    </PackageReleaseNotes>
+    
+    <!-- Build Settings -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-	<ItemGroup>
-		<Compile Remove="Packs\**" />
-		<EmbeddedResource Remove="Packs\**" />
-		<None Remove="Packs\**" />
-	</ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Packs\**" />
+    <EmbeddedResource Remove="Packs\**" />
+    <None Remove="Packs\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.1.66" />
-		<PackageReference Include="Dapper.Contrib" Version="2.0.78" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+  </ItemGroup>
 </Project>
