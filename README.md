@@ -21,7 +21,7 @@ Advanced extensions for Dapper and Dapper.Contrib targeting .NET 9.
 [Full Documentation](Rop.Dapper.ContribEx10/Readme.md)
 
 ### Rop.AbsDatabase10
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 Abstract database layer providing base functionality for database operations.
 
@@ -32,7 +32,7 @@ Abstract database layer providing base functionality for database operations.
 - Result-oriented error handling with `Rop.Results9`
 
 ### Rop.SqlDatabase10
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 SQL Server specific implementation with advanced features.
 
@@ -44,6 +44,7 @@ SQL Server specific implementation with advanced features.
 - Foreign database support
 
 ### Rop.CycleTask
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 Background task scheduler for periodic database operations.
 
@@ -158,12 +159,26 @@ Contributions are welcome! Please:
 
 ## License
 
-This project uses multiple licenses:
+This entire solution is licensed under **GPL-3.0-or-later**.
 
-- **Rop.Dapper.ContribEx10**: GPL-3.0-or-later
-- **Rop.AbsDatabase10, Rop.SqlDatabase10, Rop.CycleTask**: MIT
+All projects in this repository:
+- **Rop.Dapper.ContribEx10**
+- **Rop.AbsDatabase10**
+- **Rop.SqlDatabase10**
+- **Rop.CycleTask**
 
-See [LICENSE](LICENSE) files in each project directory for details.
+are distributed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html).
+
+See [LICENSE](LICENSE) file for full license text.
+
+### What this means:
+
+- ✅ You can use this software freely
+- ✅ You can modify the source code
+- ✅ You can distribute modified versions
+- ⚠️ Any modifications must also be GPL-3.0-or-later
+- ⚠️ You must disclose the source code of derivative works
+- ⚠️ You must include copyright and license notices
 
 ## Contact
 

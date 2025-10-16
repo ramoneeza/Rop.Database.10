@@ -4,6 +4,27 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    
+    <!-- Package Metadata -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Rop.CycleTask</PackageId>
+    <Authors>Ramon Ordiales Plaza</Authors>
+    <Company>Ramon Ordiales Plaza</Company>
+    <Product>Rop.Database10</Product>
+    <Version>1.0.0</Version>
+    <Description>Background task scheduler with priority-based queue for periodic database operations</Description>
+    
+    <!-- License -->
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <Copyright>2025 Ramon Ordiales Plaza</Copyright>
+    
+    <!-- Repository -->
+    <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
+    
+    <!-- Documentation -->
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
 </Project>

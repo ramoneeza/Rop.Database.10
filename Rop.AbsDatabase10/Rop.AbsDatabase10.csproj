@@ -5,23 +5,35 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <RootNamespace>Rop.Database</RootNamespace>
+	  
+	  <!-- Package Metadata -->
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageId>Rop.AbsDatabase10</PackageId>
-	  <Authors>Ramon Ordiales</Authors>
+	  <Authors>Ramon Ordiales Plaza</Authors>
+	  <Company>Ramon Ordiales Plaza</Company>
 	  <Version>1.0.13</Version>
 	  <Product>Rop.Database10</Product>
-	  <Description>Abstract Class Rop.Database</Description>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	  <RepositoryUrl>\\eeza.csic.es\nugetEeza$</RepositoryUrl>
+	  <Description>Abstract database layer for Rop.Database10 suite with Unit of Work pattern, transaction management, and connection pooling</Description>
+	  
+	  <!-- License -->
+	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+	  <Copyright>2025 Ramon Ordiales Plaza</Copyright>
+	  
+	  <!-- Repository -->
+	  <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
+	  
+	  <!-- Documentation -->
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  </PropertyGroup>
+  </PropertyGroup>
 
-	  <ItemGroup>
-	  <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
-	  <PackageReference Include="Rop.Results9" Version="1.2.3" />
-	  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+    <PackageReference Include="Rop.Results9" Version="1.2.3" />
+  </ItemGroup>
 
-	  <ItemGroup>
-	    <ProjectReference Include="..\Rop.Dapper.ContribEx10\Rop.Dapper.ContribEx10.csproj" />
-	  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rop.Dapper.ContribEx10\Rop.Dapper.ContribEx10.csproj" />
+  </ItemGroup>
 </Project>

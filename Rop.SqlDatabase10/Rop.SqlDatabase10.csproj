@@ -5,15 +5,27 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <RootNamespace>Rop.Database10</RootNamespace>
+	  
+	  <!-- Package Metadata -->
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageId>Rop.SqlDatabase10</PackageId>
 	  <Authors>Ramon Ordiales Plaza</Authors>
-	  <Company>EEZA</Company>
+	  <Company>Ramon Ordiales Plaza</Company>
 	  <Product>Rop.Database10</Product>
-	  <Description>Rutinas comunes de Base de Datos Sql. UnitOfWork,</Description>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <Version>1.0.1</Version>
-	  <RepositoryUrl>\\eeza.csic.es\nugetEeza$</RepositoryUrl>
+	  <Description>SQL Server implementation for Rop.Database10 with Change Tracking, Repository patterns, Cache, and advanced features</Description>
+	  
+	  <!-- License -->
+	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+	  <Copyright>2025 Ramon Ordiales Plaza</Copyright>
+	  
+	  <!-- Repository -->
+	  <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
+	  
+	  <!-- Documentation -->
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
