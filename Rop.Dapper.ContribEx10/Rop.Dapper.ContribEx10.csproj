@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <PackageTags>orm;sql;micro-orm;dapper</PackageTags>
+	  <Description>Adicional helpers for Dapper.net and Dapper.Contrib</Description>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Version>1.0.0</Version>
+	  <Authors>Ramon Ordiales Plaza</Authors>
+	  <Company>Ramon Ordiales Plaza</Company>
+	  <Copyright>2025 Ramon Ordiales</Copyright>
+	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+	  <RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Dapper.ContribEx10</PackageProjectUrl>
+	  <PackageReadmeFile>Readme.md</PackageReadmeFile>
+
+    <!-- Enable XML documentation file generation -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Packs\**" />
+		<EmbeddedResource Remove="Packs\**" />
+		<None Remove="Packs\**" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.66" />
+		<PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+	</ItemGroup>
+</Project>

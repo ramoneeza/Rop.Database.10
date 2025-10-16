@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <RootNamespace>Rop.Database</RootNamespace>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageId>Rop.AbsDatabase10</PackageId>
+	  <Authors>Ramon Ordiales</Authors>
+	  <Version>1.0.13</Version>
+	  <Product>Rop.Database10</Product>
+	  <Description>Abstract Class Rop.Database</Description>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <RepositoryUrl>\\eeza.csic.es\nugetEeza$</RepositoryUrl>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  </PropertyGroup>
+
+	  <ItemGroup>
+	  <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+	  <PackageReference Include="Rop.Results9" Version="1.2.3" />
+	  </ItemGroup>
+
+	  <ItemGroup>
+	    <ProjectReference Include="..\Rop.Dapper.ContribEx10\Rop.Dapper.ContribEx10.csproj" />
+	  </ItemGroup>
+</Project>

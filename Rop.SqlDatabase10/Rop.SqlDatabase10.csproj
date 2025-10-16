@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <RootNamespace>Rop.Database10</RootNamespace>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageId>Rop.SqlDatabase10</PackageId>
+	  <Authors>Ramon Ordiales Plaza</Authors>
+	  <Company>EEZA</Company>
+	  <Product>Rop.Database10</Product>
+	  <Description>Rutinas comunes de Base de Datos Sql. UnitOfWork,</Description>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <Version>1.0.1</Version>
+	  <RepositoryUrl>\\eeza.csic.es\nugetEeza$</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
+    <PackageReference Include="System.Runtime.Caching" Version="9.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rop.AbsDatabase10\Rop.AbsDatabase10.csproj" />
+    <ProjectReference Include="..\Rop.CycleTask\Rop.CycleTask.csproj" />
+  </ItemGroup>
+
+</Project>
