@@ -21,8 +21,7 @@
 	  <Copyright>2025 Ramon Ordiales Plaza</Copyright>
 	  
 	  <!-- Repository -->
-	  <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
-	  <RepositoryType>git</RepositoryType>
+	  <RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
 	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
 	  
 	  <!-- Documentation -->

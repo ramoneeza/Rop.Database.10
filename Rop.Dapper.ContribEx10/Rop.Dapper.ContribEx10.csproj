@@ -21,9 +21,7 @@
     <!-- License -->
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     
-    <!-- Repository - CORREGIDO CON LA URL REAL -->
-    <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+	<RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
     <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
     
     <!-- Documentation -->
