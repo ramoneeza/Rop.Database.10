@@ -12,20 +12,20 @@
 	  <PackageId>Rop.AbsDatabase10</PackageId>
 	  <Authors>Ramon Ordiales Plaza</Authors>
 	  <Company>Ramon Ordiales Plaza</Company>
-	  <Version>1.0.13</Version>
+	  <Version>1.0.1</Version>
 	  <Product>Rop.Database10</Product>
 	  <Description>Abstract database layer for Rop.Database10 suite with Unit of Work pattern, transaction management, and connection pooling</Description>
 	  
 	  <!-- License -->
 	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-	  <Copyright>2025 Ramon Ordiales Plaza</Copyright>
-	  
-	  <!-- Repository -->
-	  <RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
+	  <NugetUrl>https://api.nuget.org/v3/index.json</NugetUrl>
+	  <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
 	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
 	  
 	  <!-- Documentation -->
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

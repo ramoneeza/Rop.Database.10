@@ -8,7 +8,7 @@
 	  <PackageIcon>icon.png</PackageIcon>
     <!-- Package Metadata -->
     <PackageId>Rop.Dapper.ContribEx10</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Ramon Ordiales Plaza</Authors>
     <Company>Ramon Ordiales Plaza</Company>
     <Copyright>2025 Ramon Ordiales Plaza</Copyright>
@@ -21,8 +21,10 @@
     <!-- License -->
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     
-	<RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
+	<NugetUrl>https://api.nuget.org/v3/index.json</NugetUrl>
+	<RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
     
     <!-- Documentation -->
     <PackageReadmeFile>Readme.md</PackageReadmeFile>

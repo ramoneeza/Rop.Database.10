@@ -23,6 +23,7 @@ Advanced extensions for Dapper and Dapper.Contrib targeting .NET 9.
 [Full Documentation](Rop.Dapper.ContribEx10/Readme.md)
 
 ### Rop.AbsDatabase10
+[![NuGet](https://img.shields.io/nuget/v/Rop.AbsDatabase10.svg)](https://www.nuget.org/packages/Rop.AbsDatabase10)
 [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 Abstract database layer providing base functionality for database operations.
@@ -34,6 +35,7 @@ Abstract database layer providing base functionality for database operations.
 - Result-oriented error handling with `Rop.Results9`
 
 ### Rop.SqlDatabase10
+[![NuGet](https://img.shields.io/nuget/v/Rop.SqlDatabase10.svg)](https://www.nuget.org/packages/Rop.SqlDatabase10)
 [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 SQL Server specific implementation with DTO-oriented repository patterns.

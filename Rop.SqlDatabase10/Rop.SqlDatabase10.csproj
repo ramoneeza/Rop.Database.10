@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -13,7 +13,7 @@
 	  <Authors>Ramon Ordiales Plaza</Authors>
 	  <Company>Ramon Ordiales Plaza</Company>
 	  <Product>Rop.Database10</Product>
-	  <Version>1.0.1</Version>
+	  <Version>1.0.4</Version>
 	  <Description>SQL Server implementation for Rop.Database10 with Change Tracking, Repository patterns, Cache, and advanced features</Description>
 	  
 	  <!-- License -->
@@ -21,11 +21,14 @@
 	  <Copyright>2025 Ramon Ordiales Plaza</Copyright>
 	  
 	  <!-- Repository -->
-	  <RepositoryUrl>https://api.nuget.org/v3/index.json</RepositoryUrl>
+	  <NugetUrl>https://api.nuget.org/v3/index.json</NugetUrl>
+	  <RepositoryUrl>https://github.com/ramoneeza/Rop.Database.10</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
 	  <PackageProjectUrl>https://github.com/ramoneeza/Rop.Database.10</PackageProjectUrl>
 	  
 	  <!-- Documentation -->
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
