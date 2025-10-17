@@ -116,7 +116,10 @@ namespace Rop.Database10.Repository
             Repository.ReplaceAll(rall.Value,InRange);
             MustReload = false;
             Initialized = true;
-            if (!avoidsendchanges) OnMustInvokeChanges(null);
+            if (!avoidsendchanges) 
+                OnMustInvokeChanges(null);
+            else
+                RepositoryChanged(null);   
             return VoidResult.Ok;
         }
         public bool ResetIds(IEnumerable changes) => ResetIds(changes.Cast<K>().ToArray());
