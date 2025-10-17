@@ -1,4 +1,5 @@
 ﻿using Rop.Database10.Repository;
+using Rop.Database10.Tracking;
 
 namespace Rop.Database10.PartialKeyRepository;
 
@@ -105,18 +106,21 @@ public abstract class AbsSimpleSqlPartialIntRepository<T>(Database database)
 /// <summary>
 /// Base class for a SQL repository with partial key support and DTO and Change Tracking.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-/// <typeparam name="D"></typeparam>
-/// <typeparam name="K"></typeparam>
+/// <typeparam name="T">Entity type (business model)</typeparam>
+/// <typeparam name="D">DTO type (database table representation)</typeparam>
+/// <typeparam name="K">Key type</typeparam>
 public abstract class AbsSqlPartialRepositoryK<T, D, K> : AbsSimpleSqlPartialRepositoryK<T, D, K> where T : class where D : class where K : notnull
 {
     public SqlTableDependency TableDependency { get; private set; }
-    public int ChangesPriority { get; }
+    public ChangeTrackingPriority ChangesPriority { get; }
+    
     public abstract K CombineKeys(object? key1, object? key2);
+    
     protected virtual SqlTableDependency FactoryTableDependency()
     {
         return Database.GetTableDependency(typeof(D), ChangesPriority);
     }
+    
     private void TableDependency_OnChanged(object? sender, DeltaChanges e)
     {
         if (ReloadOnAnyChange)
@@ -129,10 +133,15 @@ public abstract class AbsSqlPartialRepositoryK<T, D, K> : AbsSimpleSqlPartialRep
             ResetIds(keys);
         }
     }
-    // Constructor
-    protected AbsSqlPartialRepositoryK(Database database, int changesPriority = 3) : base(database)
+    
+    /// <summary>
+    /// Constructor for partial key repository with Change Tracking
+    /// </summary>
+    /// <param name="database">Database instance</param>
+    /// <param name="changesPriority">Change tracking priority. If null, uses Default (Medium - check every 16 seconds)</param>
+    protected AbsSqlPartialRepositoryK(Database database, ChangeTrackingPriority? changesPriority = null) : base(database)
     {
-        ChangesPriority = changesPriority;
+        ChangesPriority = changesPriority ?? ChangeTrackingPriority.Default;
         // ReSharper disable once VirtualMemberCallInConstructor
         TableDependency = FactoryTableDependency();
         TableDependency.OnChanged += TableDependency_OnChanged;
@@ -147,17 +156,15 @@ public abstract class AbsSqlPartialRepositoryK<T, D, K> : AbsSimpleSqlPartialRep
     {
         return Database.GetSome<K, D>(keys);
     }
-
 }
 /// <summary>
 /// Base class for a SQL repository with partial key support and DTO and Change Tracking with key of type int.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-/// <typeparam name="D"></typeparam>
-/// <param name="database"></param>
-/// <param name="priority"></param>
-
-public abstract class AbsSqlPartialDtoIntRepository<T, D>(Database database, int priority = 3)
+/// <typeparam name="T">Entity type (business model)</typeparam>
+/// <typeparam name="D">DTO type (database table representation)</typeparam>
+/// <param name="database">Database instance</param>
+/// <param name="priority">Change tracking priority. If null, uses Default (Medium - check every 16 seconds)</param>
+public abstract class AbsSqlPartialDtoIntRepository<T, D>(Database database, ChangeTrackingPriority? priority = null)
     : AbsSqlPartialRepositoryK<T, D, int>(database, priority)
     where T : class
     where D : class
@@ -166,12 +173,11 @@ public abstract class AbsSqlPartialDtoIntRepository<T, D>(Database database, int
 /// <summary>
 /// Base class for a SQL repository with partial key support and DTO and Change Tracking with key of type string.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-/// <typeparam name="D"></typeparam>
-/// <param name="database"></param>
-/// <param name="priority"></param>
-
-public abstract class AbsSqlPartialDtoRepository<T, D>(Database database, int priority = 3)
+/// <typeparam name="T">Entity type (business model)</typeparam>
+/// <typeparam name="D">DTO type (database table representation)</typeparam>
+/// <param name="database">Database instance</param>
+/// <param name="priority">Change tracking priority. If null, uses Default (Medium - check every 16 seconds)</param>
+public abstract class AbsSqlPartialDtoRepository<T, D>(Database database, ChangeTrackingPriority? priority = null)
     : AbsSqlPartialRepositoryK<T, D, string>(database, priority)
     where T : class
     where D : class

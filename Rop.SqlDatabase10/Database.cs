@@ -95,7 +95,7 @@ namespace Rop.Database10
             var strconn = Strconn.Replace(this.MainDatabaseName, databasename).Replace(this.Server, server);
             return new Database(strconn, null);
         }
-        public SqlTableDependency GetTableDependency(Type type, int changesPriority)
+        public SqlTableDependency GetTableDependency(Type type, ChangeTrackingPriority changesPriority)
         {
             var key = SqlTableDependency.CalcKey(this, type);
             return _cycleTasks.TryAdd(key, _ => new SqlTableDependency(this, type, changesPriority));

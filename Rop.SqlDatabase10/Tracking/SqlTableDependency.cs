@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Rop.Database10.Tracking;
 
 namespace Rop.Database10
 {
@@ -9,18 +10,18 @@ namespace Rop.Database10
         public TimeSpan Interval { get; }
         public Database Database { get; }
         public KeyDescription TableDescription { get; }
-        public int Priority { get;  }
+        public ChangeTrackingPriority Priority { get;  }
         public long TableVersion { get; private set; }
         public event EventHandler<DeltaChanges>? OnChanged;
 
         // Cambiado a internal para que Database (mismo ensamblado) pueda instanciarlo.
-        internal SqlTableDependency(Database database, Type t, int priority = 0)
+        internal SqlTableDependency(Database database, Type t, ChangeTrackingPriority priority = ChangeTrackingPriority.Default)
         {
             var name = CalcKey(database, t);
             Key = name;
             Priority = priority;
-            if (Priority > 10) throw new ArgumentException("Priority from 0 (maximum) to 10 (minimum)");
-            Interval = TimeSpan.FromSeconds(1 << Priority);
+            if ((int)Priority > 10) throw new ArgumentException("Priority from 0 (maximum) to 10 (minimum)");
+            Interval =Priority.ToInterval();
             TableDescription = DapperHelperExtend.GetAnyKeyDescription(t) ?? throw new ArgumentException($"type {t} has not any kind of key");
             Database = database.FactoryExternalDatabase(TableDescription);
             TableVersion = Database.GetDbVersion(TableDescription).ValueOrThrow();
