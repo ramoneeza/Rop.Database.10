@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -12,7 +12,7 @@
 	  <PackageId>Rop.AbsDatabase10</PackageId>
 	  <Authors>Ramon Ordiales Plaza</Authors>
 	  <Company>Ramon Ordiales Plaza</Company>
-	  <Version>1.0.1</Version>
+	  <Version>1.0.2</Version>
 	  <Product>Rop.Database10</Product>
 	  <Description>Abstract database layer for Rop.Database10 suite with Unit of Work pattern, transaction management, and connection pooling</Description>
 	  

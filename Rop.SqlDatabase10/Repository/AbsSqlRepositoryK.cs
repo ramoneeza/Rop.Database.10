@@ -58,8 +58,9 @@ namespace Rop.Database10.Repository
         
         protected override EnumerableResult<T> IntReloadAll()
         {
-            var alldto = UseSlim ? Database.GetAllSlim<D>() : Database.GetAll<D>();
-            return alldto.Map(Map);
+            var ralldto = UseSlim ? Database.GetAllSlim<D>() : Database.GetAll<D>();
+            if (ralldto.IsFailed) return ralldto.Error!;
+            return new(ralldto.Value.Select(Map));
         }
         
         protected override EnumerableResult<T> IntReloadSome(params IEnumerable<K> keys)

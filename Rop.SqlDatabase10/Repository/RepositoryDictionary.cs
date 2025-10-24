@@ -21,9 +21,17 @@ public class RepositoryDictionary<K,D> where K: notnull where D: class
     {
         FnGetKey = fnGetKey;
         var tc = Type.GetTypeCode(typeof(K));
-        if (tc == TypeCode.String) _dictionary=(Dictionary<K, D>)(object)(new Dictionary<string, D>(StringComparer.OrdinalIgnoreCase));
-        if (tc == TypeCode.Int32) _dictionary=(Dictionary<K, D>)(object)(new Dictionary<int, D>());
-        throw new Exception($"Type {typeof(K)} not supported");
+        switch (tc)
+        {
+            case TypeCode.String:
+                _dictionary = (Dictionary<K, D>)(object)(new Dictionary<string, D>(StringComparer.OrdinalIgnoreCase));
+                break;
+            case TypeCode.Int32:
+                _dictionary = (Dictionary<K, D>)(object)(new Dictionary<string, D>(StringComparer.OrdinalIgnoreCase));
+                break;
+            default:
+                throw new Exception($"Type {typeof(K)} not supported");
+        }
     }
     public int Count
     {

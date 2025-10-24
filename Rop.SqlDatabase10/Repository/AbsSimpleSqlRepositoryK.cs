@@ -107,20 +107,29 @@ namespace Rop.Database10.Repository
         protected VoidResult ReloadAll(bool avoidsendchanges = false)
         {
             LastError = null;
-            var rall=IntReloadAll();
-            if (rall.IsFailed)
+            try
             {
-                LastError = rall.Error;
-                return rall;
+                var rall = IntReloadAll();
+                if (rall.IsFailed)
+                {
+                    LastError = rall.Error;
+                    return rall;
+                }
+
+                Repository.ReplaceAll(rall.Value, InRange);
+                MustReload = false;
+                Initialized = true;
+                if (!avoidsendchanges)
+                    OnMustInvokeChanges(null);
+                else
+                    RepositoryChanged(null);
+                return VoidResult.Ok;
             }
-            Repository.ReplaceAll(rall.Value,InRange);
-            MustReload = false;
-            Initialized = true;
-            if (!avoidsendchanges) 
-                OnMustInvokeChanges(null);
-            else
-                RepositoryChanged(null);   
-            return VoidResult.Ok;
+            catch (Exception ex)
+            {
+               LastError = new ExceptionError(ex);
+               return LastError;
+            }
         }
         public bool ResetIds(IEnumerable changes) => ResetIds(changes.Cast<K>().ToArray());
         public bool ResetIds(params IReadOnlyCollection<K> changes)

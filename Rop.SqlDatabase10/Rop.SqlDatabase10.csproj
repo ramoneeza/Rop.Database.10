@@ -13,7 +13,7 @@
 	  <Authors>Ramon Ordiales Plaza</Authors>
 	  <Company>Ramon Ordiales Plaza</Company>
 	  <Product>Rop.Database10</Product>
-	  <Version>1.0.5</Version>
+	  <Version>1.0.7</Version>
 	  <Description>SQL Server implementation for Rop.Database10 with Change Tracking, Repository patterns, Cache, and advanced features</Description>
 	  
 	  <!-- License -->

@@ -81,9 +81,9 @@ public class PropertyCache
     /// </summary>
     public Func<object,object?> Getter { get; }
     /// <summary>
-    /// Cached setter delegate for the property.
+    /// Cached setter delegate for the property. Null if the property is read-only.
     /// </summary>
-    public Action<object,object> Setter { get; }
+    public Action<object,object>? Setter { get; }
 
     private static Func<object, object?> _createGetter(PropertyInfo property)
     {
@@ -94,8 +94,14 @@ public class PropertyCache
         var lambda = Expression.Lambda<Func<object, object?>>(castResult, instanceParam);
         return lambda.Compile();
     }
-    private static Action<object, object?> _createSetter(PropertyInfo property)
+    private static Action<object, object?>? _createSetter(PropertyInfo property)
     {
+        // Si la propiedad no tiene setter, retornar null
+        if (!property.CanWrite || property.GetSetMethod() == null)
+        {
+            return null;
+        }
+        
         var instanceParam = Expression.Parameter(typeof(object), "instance");
         var valueParam = Expression.Parameter(typeof(object), "value");
         var castInstance = Expression.Convert(instanceParam, property.DeclaringType!);
