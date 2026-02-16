@@ -10,7 +10,7 @@ namespace Rop.Database10.Repository
     public interface ISqlRepository<T,K>:IAbsSimpleSqlRepository<T,K> where T : class where K : notnull
     {
         SqlTableDependency TableDependency { get; }
-        long Version { get; }
+        TrackingVersion Version { get; }
     }
     
     /// <summary>
@@ -24,7 +24,7 @@ namespace Rop.Database10.Repository
         public bool UseSlim { get; } = false;
         public SqlTableDependency TableDependency { get; private set; }
         public ChangeTrackingPriority ChangesPriority { get; }
-        public long Version => TableDependency.TableVersion;
+        public TrackingVersion Version => TableDependency.TableVersion;
         
         protected virtual SqlTableDependency FactoryTableDependency()
         {

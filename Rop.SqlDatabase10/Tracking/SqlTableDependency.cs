@@ -11,7 +11,7 @@ namespace Rop.Database10
         public Database Database { get; }
         public KeyDescription TableDescription { get; }
         public ChangeTrackingPriority Priority { get;  }
-        public long TableVersion { get; private set; }
+        public TrackingVersion TableVersion { get; private set; }
         public event EventHandler<DeltaChanges>? OnChanged;
 
         // Cambiado a internal para que Database (mismo ensamblado) pueda instanciarlo.
@@ -24,7 +24,12 @@ namespace Rop.Database10
             Interval =Priority.ToInterval();
             TableDescription = DapperHelperExtend.GetAnyKeyDescription(t) ?? throw new ArgumentException($"type {t} has not any kind of key");
             Database = database.FactoryExternalDatabase(TableDescription);
-            TableVersion = Database.GetDbVersion(TableDescription).ValueOrThrow();
+            var tableversion= Database.GetDbVersion(TableDescription).ValueOrThrow();
+            TableVersion = new TrackingVersion
+            {
+                Version = tableversion,
+                Timestamp = DateTimeOffset.Now
+            };
         }
         public string? PayLoad()
         {
@@ -32,11 +37,15 @@ namespace Rop.Database10
             try
             {
                 sqlConnection.Open();
-                var r = sqlConnection.GetTableChanges(TableVersion, TableDescription);
+                var r = sqlConnection.GetTableChanges(TableVersion.Version, TableDescription);
                 var deltaChanges = r.ValueOrThrow();
                 if (deltaChanges is { IsNewVersion: true, IsEmpty: false })
                 {
-                    TableVersion = deltaChanges.Version;
+                    TableVersion = new TrackingVersion
+                    {
+                        Version = deltaChanges.Version,
+                        Timestamp = DateTimeOffset.Now
+                    };
                     _sendChanges(deltaChanges);
                 }
                 return null;
