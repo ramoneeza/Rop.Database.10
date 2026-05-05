@@ -27,7 +27,7 @@ public class RepositoryDictionary<K,D> where K: notnull where D: class
                 _dictionary = (Dictionary<K, D>)(object)(new Dictionary<string, D>(StringComparer.OrdinalIgnoreCase));
                 break;
             case TypeCode.Int32:
-                _dictionary = (Dictionary<K, D>)(object)(new Dictionary<string, D>(StringComparer.OrdinalIgnoreCase));
+                _dictionary = (Dictionary<K, D>)(object)(new Dictionary<int, D>());
                 break;
             default:
                 throw new Exception($"Type {typeof(K)} not supported");
