@@ -13,7 +13,7 @@
 	  <Authors>Ramon Ordiales Plaza</Authors>
 	  <Company>Ramon Ordiales Plaza</Company>
 	  <Product>Rop.Database10</Product>
-	  <Version>1.0.8</Version>
+	  <Version>1.0.12</Version>
 	  <Description>SQL Server implementation for Rop.Database10 with Change Tracking, Repository patterns, Cache, and advanced features</Description>
 	  
 	  <!-- License -->
@@ -35,12 +35,11 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     <PackageReference Include="System.Runtime.Caching" Version="9.0.9" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Rop.AbsDatabase10\Rop.AbsDatabase10.csproj" />
-  </ItemGroup>
 	<ItemGroup>
 		<None Include="Readme.md" Pack="true" PackagePath="\" /> 
 		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Rop.AbsDatabase10\Rop.AbsDatabase10.csproj" />
 	</ItemGroup>
 </Project>

@@ -161,6 +161,7 @@ namespace Rop.Database10.Repository
             if (key is string s && string.IsNullOrEmpty(s)) return null;
             return Repository.Get(key);
         }
+        protected virtual RepositoryDictionary<K, T> FactoryDictionary()=> new RepositoryDictionary<K, T>(GetTKey);
         // Constructor
         protected AbsSimpleSqlRepositoryK(Database database):this(database, DapperHelperExtend.GetKeyDescription<D>())
         {
@@ -172,7 +173,8 @@ namespace Rop.Database10.Repository
             var keyPropT=typeof(T).GetProperty(keydescription.KeyProp.Name) ?? throw new Exception($"Type {typeof(T)} has not key");
             KeyPropT = new PropertyCache(keyPropT);
             // ReSharper disable once VirtualMemberCallInConstructor
-            Repository = new RepositoryDictionary<K, T>(GetTKey);
+            //Repository = new RepositoryDictionary<K, T>(GetTKey);
+            Repository = FactoryDictionary();
         }
         
         public virtual List<T> GetAll()
